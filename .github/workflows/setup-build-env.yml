@@ -1,0 +1,19 @@
+name: Setup build environment
+jobs:
+  setup-build-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out AprilTag
+        uses: actions/checkout@v3
+        with:
+          repository: AprilRobotics/apriltag
+          ref: d6b7d1c28e7310b925dcfc4b0b67622608b489d3
+          lfs: true
+          submodules: recursive
+          path: ./apriltag
+      - name: Get CMake if not present
+        run: cmake -v || sudo apt-get install -y -q cmake
+      - name: Configure AprilTag
+        run: cmake -B ./apriltag/build ./apriltag
+      - name: Build AprilTag
+        run: cmake --build ./apriltag/build
